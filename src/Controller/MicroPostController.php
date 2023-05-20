@@ -52,8 +52,11 @@ class MicroPostController extends AbstractController
             $post->setCreated(new DateTime());
             $posts->save($post, true);
 
-            // add a flush
+            // add a flash
+            $this->addFlash('success', 'success!!');
+
             // redirect
+            return $this->redirectToRoute('micro_post_index');
         }
 
         
