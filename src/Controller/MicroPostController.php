@@ -42,7 +42,6 @@ class MicroPostController extends AbstractController
         $form = $this->createFormBuilder($microPost)
             ->add('title')
             ->add('text')
-            ->add('submit', SubmitType::class, ['label' => 'save'])
             ->getForm();
 
         $form->handleRequest($request);
@@ -58,8 +57,6 @@ class MicroPostController extends AbstractController
             // redirect
             return $this->redirectToRoute('micro_post_index');
         }
-
-        
 
         return $this->renderForm(
             'micro_post/add.html.twig', 
