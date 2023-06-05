@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+{# <html> #}
+<html class="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -12,11 +13,22 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: 'class'
+            }
+        </script>
     </head>
-    <body>
+    <body class="bg-gray-100 text-gray-800 m-10 dark:bg-gray-800 dark:text-white">
+        
+        <h1 class="text-xl font-medium">Welcome to Symfony</h1>
         {% for message in app.flashes('success') %}
             <div style="color:green">{{ message }}</div>
         {% endfor %}
         {% block body %}{% endblock %}
+
+        
     </body>
 </html>
