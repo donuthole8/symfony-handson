@@ -29,7 +29,7 @@ class MicroPostController extends AbstractController
     public function microPostDetail(
         MicroPost $microPost,
     ): Response {
-        return $this->render('micro_post/show.html.twig', [
+        return $this->render('micro_post/detail.html.twig', [
             'microPost' => $microPost,
         ]);
     }
@@ -52,12 +52,9 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('micro_post_index');
         }
 
-        return $this->renderForm(
-            'micro_post/add.html.twig', 
-            [
-                'form' => $form
-            ]
-        );
+        return $this->renderForm('micro_post/add.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/micro_post/{microPost}/edit', name: 'micro_post_edit')]
@@ -78,13 +75,10 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('micro_post_index');
         }
 
-        return $this->renderForm(
-            'micro_post/edit.html.twig', 
-            [
-                'form' => $form,
-                'microPost' => $microPost
-            ]
-        );
+        return $this->renderForm('micro_post/edit.html.twig', [
+            'form' => $form,
+            'microPost' => $microPost
+        ]);
     }
 
     #[Route('/micro_post/{microPost}/comment', name: 'micro_post_comment_add')]
@@ -103,18 +97,14 @@ class MicroPostController extends AbstractController
 
             $this->addFlash('success', 'Your comment have been post');
 
-            return $this->redirectToRoute(
-                'micro_post_detail',
-                ['microPost' => $microPost->getId()]
-            );
+            return $this->redirectToRoute('micro_post_detail',[
+                'microPost' => $microPost->getId()
+            ]);
         }
 
-        return $this->renderForm(
-            'micro_post/comment.html.twig', 
-            [
-                'form' => $form,
-                'microPost' => $microPost,
-            ]
-        );
+        return $this->renderForm('micro_post/comment.html.twig', [
+            'form' => $form,
+            'microPost' => $microPost,
+        ]);
     }
 }
