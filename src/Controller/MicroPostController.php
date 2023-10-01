@@ -97,7 +97,7 @@ class MicroPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $microPostComment = $form->getData();
-            $microPostComment->setPost($microPost);
+            $microPostComment->setMicroPost($microPost);
             $commentRepository->save($microPostComment, true);
 
             $this->addFlash('success', 'Your comment have been post');

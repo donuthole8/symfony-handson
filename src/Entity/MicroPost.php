@@ -30,7 +30,7 @@ class MicroPost
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $created;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'microPost', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comment;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'liked')]
@@ -95,7 +95,7 @@ public function addComment(Comment $comment): self
 {
     if (!$this->comment->contains($comment)) {
         $this->comment->add($comment);
-        $comment->setPost($this);
+        $comment->setMicroPost($this);
     }
 
     return $this;
@@ -105,8 +105,8 @@ public function removeComment(Comment $comment): self
 {
     if ($this->comment->removeElement($comment)) {
         // set the owning side to null (unless already changed)
-        if ($comment->getPost() === $this) {
-            $comment->setPost(null);
+        if ($comment->getMicroPost() === $this) {
+            $comment->setMicroPost(null);
         }
     }
 

@@ -21,7 +21,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comment')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?MicroPost $post = null;
+    private ?MicroPost $microPost = null;
 
     public function getId(): ?int
     {
@@ -40,14 +40,14 @@ class Comment
         return $this;
     }
 
-    public function getPost(): ?MicroPost
+    public function getMicroPost(): ?MicroPost
     {
-        return $this->post;
+        return $this->microPost;
     }
 
-    public function setPost(?MicroPost $post): self
+    public function setMicroPost(?MicroPost $microPost): self
     {
-        $this->post = $post;
+        $this->microPost = $microPost;
 
         return $this;
     }
