@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MicroPostRepository::class)]
 class MicroPost
@@ -17,13 +18,17 @@ class MicroPost
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5, max: 255, minMessage: 'Title is to short, 5 characters or more')]
+    private string $title;
 
     #[ORM\Column(length: 500)]
-    private ?string $text = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5, max: 500, minMessage: 'Title is to short, 5 characters or more')]
+    private string $text;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private \DateTimeInterface $created;
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comment;
