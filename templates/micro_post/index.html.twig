@@ -4,9 +4,9 @@
 
 {% block body %}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        {% if posts|length > 0 %}
-            {% for post in posts %}
-                {{ include('micro_post/post_item.html.twig', {psot: post}) }}
+        {% if microPosts|length > 0 %}
+            {% for microPost in microPosts %}
+                {{ include('micro_post/post_item.html.twig', { microPost: microPost }) }}
             {% endfor %}
         {% else %}
             <div>

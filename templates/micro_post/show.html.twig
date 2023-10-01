@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Post - {{ post.title }}{% endblock %}
+{% block title %}Post - {{ microPost.title }}{% endblock %}
 
 {% block bread %}→ Post{% endblock %}
 
 {% block body %}
-    {{ include('micro_post/post_item.html.twig', {psot: post}) }}
+    {{ include('micro_post/post_item.html.twig', { microPost: microPost }) }}
 {% endblock %}
