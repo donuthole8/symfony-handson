@@ -21,7 +21,7 @@ class HelloController extends AbstractController
     public function index(UserProfileRepository $profiles): Response
     {
         $user = new User();
-        $user->setEmail('muro@gmail.com');
+        $user->setEmail(bin2hex(openssl_random_pseudo_bytes(8)) . '@gmail.com');
         $user->setPassword('pass');
 
         $profile = new UserProfile();

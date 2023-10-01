@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MicroPostRepository::class)]
 class MicroPost
@@ -17,23 +18,27 @@ class MicroPost
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5, max: 255, minMessage: 'Title is to short, 5 characters or more')]
+    private string $title;
 
     #[ORM\Column(length: 500)]
-    private ?string $text = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5, max: 500, minMessage: 'Title is to short, 5 characters or more')]
+    private string $text;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private \DateTimeInterface $created;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, orphanRemoval: true)]
-    private Collection $comment;
+    #[ORM\OneToMany(mappedBy: 'microPost', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'liked')]
     private Collection $likedBy;
 
     public function __construct()
     {
-        $this->comment = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->likedBy = new ArrayCollection();
     }
 
@@ -81,16 +86,16 @@ class MicroPost
 /**
  * @return Collection<int, Comment>
  */
-public function getComment(): Collection
+public function getComments(): Collection
 {
-    return $this->comment;
+    return $this->comments;
 }
 
 public function addComment(Comment $comment): self
 {
-    if (!$this->comment->contains($comment)) {
-        $this->comment->add($comment);
-        $comment->setPost($this);
+    if (!$this->comments->contains($comment)) {
+        $this->comments[] = $comment;
+        $comment->setMicroPost($this);
     }
 
     return $this;
@@ -98,10 +103,10 @@ public function addComment(Comment $comment): self
 
 public function removeComment(Comment $comment): self
 {
-    if ($this->comment->removeElement($comment)) {
+    if ($this->comments->removeElement($comment)) {
         // set the owning side to null (unless already changed)
-        if ($comment->getPost() === $this) {
-            $comment->setPost(null);
+        if ($comment->getMicroPost() === $this) {
+            $comment->setMicroPost(null);
         }
     }
 

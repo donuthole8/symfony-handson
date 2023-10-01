@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -14,11 +15,13 @@ class Comment
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $text = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 5, max: 500)]
+    private string $text;
 
     #[ORM\ManyToOne(inversedBy: 'comment')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?MicroPost $post = null;
+    private ?MicroPost $microPost = null;
 
     public function getId(): ?int
     {
@@ -37,14 +40,14 @@ class Comment
         return $this;
     }
 
-    public function getPost(): ?MicroPost
+    public function getMicroPost(): ?MicroPost
     {
-        return $this->post;
+        return $this->microPost;
     }
 
-    public function setPost(?MicroPost $post): self
+    public function setMicroPost(?MicroPost $microPost): self
     {
-        $this->post = $post;
+        $this->microPost = $microPost;
 
         return $this;
     }
