@@ -34,7 +34,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-    #[Route('/micro_post/add', name: 'micro_post_add')]
+    #[Route('/micro_post/add', name: 'micro_post_add', priority: 2)]
     public function addMicroPost(
         Request $request,
         MicroPostRepository $microPostRepository,
