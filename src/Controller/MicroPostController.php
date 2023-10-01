@@ -21,7 +21,7 @@ class MicroPostController extends AbstractController
         MicroPostRepository $microPostRepository,
     ): Response {
         return $this->render('micro_post/index.html.twig', [
-            'microPosts' => $microPostRepository->findAll(),
+            'microPosts' => $microPostRepository->findAllWithComments(),
         ]);
     }
 
@@ -81,7 +81,8 @@ class MicroPostController extends AbstractController
         return $this->renderForm(
             'micro_post/edit.html.twig', 
             [
-                'form' => $form
+                'form' => $form,
+                'microPost' => $microPost
             ]
         );
     }

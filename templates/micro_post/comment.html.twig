@@ -3,7 +3,7 @@
 {% block title %}Post -  Add Comment{% endblock %}
 
 {% block bread %}
-→ Post Comment
+→ <a href="{{ path('micro_post_detail', { microPost: microPost.id }) }}">Post</a> → Comment
 {% endblock %}
 
 {% block body %}

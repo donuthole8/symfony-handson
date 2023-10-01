@@ -2,7 +2,9 @@
 
 {% block title %}Edit Post{% endblock %}
 
-{% block bread %}→ Edit Post{% endblock %}
+{% block bread %}
+→ <a href="{{ path('micro_post_detail', { microPost: microPost.id }) }}">Post</a> → Edit
+{% endblock %}
 
 {% block body %}
     {{ include('micro_post/add_form.html.twig') }}
