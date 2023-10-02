@@ -17,7 +17,7 @@ class HelloController extends AbstractController
         ["message" => "bye",   "created" => "2022/04/12"],
     ];
 
-    #[Route('/', name: 'app_index')]
+    #[Route('/hello', name: 'app_index')]
     public function index(UserProfileRepository $profiles): Response
     {
         $user = new User();

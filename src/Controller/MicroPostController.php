@@ -16,8 +16,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MicroPostController extends AbstractController
 {
-    #[Route('/micro_post', name: 'micro_post_index')]
+    #[Route('/', name: 'index')]
     public function index(
+        MicroPostRepository $microPostRepository
+    ): Response
+    {
+        return $this->render('micro_post/index.html.twig', [
+            'microPosts' => $microPostRepository->findAllWithComments(),
+        ]);
+    }
+
+    #[Route('/micro_post', name: 'micro_post_index')]
+    public function microPostIndex(
         MicroPostRepository $microPostRepository,
     ): Response {
         return $this->render('micro_post/index.html.twig', [
@@ -97,7 +107,7 @@ class MicroPostController extends AbstractController
 
             $this->addFlash('success', 'Your comment have been post');
 
-            return $this->redirectToRoute('micro_post_detail',[
+            return $this->redirectToRoute('micro_post_detail', [
                 'microPost' => $microPost->getId()
             ]);
         }
