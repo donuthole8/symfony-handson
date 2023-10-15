@@ -60,6 +60,13 @@ class AppFixtures extends Fixture
         $microPost3->setAuthor($user2);
         $manager->persist($microPost3);
 
+        $microPost5 = new MicroPost();
+        $microPost5->setTitle('Welcome to Italy!');
+        $microPost5->setText('Welcome italy');
+        $microPost5->setCreated(new DateTime());
+        $microPost5->setAuthor($user2);
+        $manager->persist($microPost5);
+
         $manager->flush();
     }
 }
