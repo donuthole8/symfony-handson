@@ -12,6 +12,7 @@ use App\Repository\MicroPostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MicroPostController extends AbstractController
@@ -36,6 +37,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/{microPost}', name: 'micro_post_detail')]
+    #[IsGranted(MicroPost::VIEW, 'microPost')]
     public function microPostDetail(
         MicroPost $microPost,
     ): Response {
@@ -45,6 +47,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/add', name: 'micro_post_add', priority: 2)]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function addMicroPost(
         Request $request,
         MicroPostRepository $microPostRepository,
@@ -54,7 +57,7 @@ class MicroPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $microPost = $form->getData();
-            $microPost->setCreated(new DateTime());
+            $microPost->setAuthor($this->getUser());
             $microPostRepository->save($microPost, true);
 
             $this->addFlash('success', 'Your micro post have been added');
@@ -68,6 +71,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/{microPost}/edit', name: 'micro_post_edit')]
+    #[IsGranted(MicroPost::EDIT, 'microPost')]
     public function editMicroPost(
         MicroPost $microPost,
         Request $request,
@@ -92,6 +96,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/{microPost}/comment', name: 'micro_post_comment_add')]
+    #[IsGranted('ROLE_COMMENTER')]
     public function addMicroPostComment(
         MicroPost $microPost,
         Request $request,
@@ -103,6 +108,7 @@ class MicroPostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $microPostComment = $form->getData();
             $microPostComment->setMicroPost($microPost);
+            $microPostComment->setAuthor($this->getUser());
             $commentRepository->save($microPostComment, true);
 
             $this->addFlash('success', 'Your comment have been post');
