@@ -12,12 +12,23 @@ use App\Repository\MicroPostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MicroPostController extends AbstractController
 {
-    #[Route('/micro_post', name: 'micro_post_index')]
+    #[Route('/', name: 'index')]
     public function index(
+        MicroPostRepository $microPostRepository
+    ): Response
+    {
+        return $this->render('micro_post/index.html.twig', [
+            'microPosts' => $microPostRepository->findAllWithComments(),
+        ]);
+    }
+
+    #[Route('/micro_post', name: 'micro_post_index')]
+    public function microPostIndex(
         MicroPostRepository $microPostRepository,
     ): Response {
         return $this->render('micro_post/index.html.twig', [
@@ -26,15 +37,17 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/{microPost}', name: 'micro_post_detail')]
+    #[IsGranted(MicroPost::VIEW, 'microPost')]
     public function microPostDetail(
         MicroPost $microPost,
     ): Response {
-        return $this->render('micro_post/show.html.twig', [
+        return $this->render('micro_post/detail.html.twig', [
             'microPost' => $microPost,
         ]);
     }
 
     #[Route('/micro_post/add', name: 'micro_post_add', priority: 2)]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function addMicroPost(
         Request $request,
         MicroPostRepository $microPostRepository,
@@ -44,7 +57,7 @@ class MicroPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $microPost = $form->getData();
-            $microPost->setCreated(new DateTime());
+            $microPost->setAuthor($this->getUser());
             $microPostRepository->save($microPost, true);
 
             $this->addFlash('success', 'Your micro post have been added');
@@ -52,15 +65,13 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('micro_post_index');
         }
 
-        return $this->renderForm(
-            'micro_post/add.html.twig', 
-            [
-                'form' => $form
-            ]
-        );
+        return $this->renderForm('micro_post/add.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/micro_post/{microPost}/edit', name: 'micro_post_edit')]
+    #[IsGranted(MicroPost::EDIT, 'microPost')]
     public function editMicroPost(
         MicroPost $microPost,
         Request $request,
@@ -78,16 +89,14 @@ class MicroPostController extends AbstractController
             return $this->redirectToRoute('micro_post_index');
         }
 
-        return $this->renderForm(
-            'micro_post/edit.html.twig', 
-            [
-                'form' => $form,
-                'microPost' => $microPost
-            ]
-        );
+        return $this->renderForm('micro_post/edit.html.twig', [
+            'form' => $form,
+            'microPost' => $microPost
+        ]);
     }
 
     #[Route('/micro_post/{microPost}/comment', name: 'micro_post_comment_add')]
+    #[IsGranted('ROLE_COMMENTER')]
     public function addMicroPostComment(
         MicroPost $microPost,
         Request $request,
@@ -99,22 +108,19 @@ class MicroPostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $microPostComment = $form->getData();
             $microPostComment->setMicroPost($microPost);
+            $microPostComment->setAuthor($this->getUser());
             $commentRepository->save($microPostComment, true);
 
             $this->addFlash('success', 'Your comment have been post');
 
-            return $this->redirectToRoute(
-                'micro_post_detail',
-                ['microPost' => $microPost->getId()]
-            );
+            return $this->redirectToRoute('micro_post_detail', [
+                'microPost' => $microPost->getId()
+            ]);
         }
 
-        return $this->renderForm(
-            'micro_post/comment.html.twig', 
-            [
-                'form' => $form,
-                'microPost' => $microPost,
-            ]
-        );
+        return $this->renderForm('micro_post/comment.html.twig', [
+            'form' => $form,
+            'microPost' => $microPost,
+        ]);
     }
 }

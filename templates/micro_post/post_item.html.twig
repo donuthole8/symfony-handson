@@ -19,7 +19,7 @@
         </a>
     </div>
     <div class="text-sm text-gray-500 dark:text-gray-400">
-        <a href="#">test-user@email.com</a>
+        <a href="#">{{ microPost.author.email }}</a>
     </div>
     <div class="flex">
         <a href="{{ path('micro_post_edit', { microPost: microPost.id }) }}" class="mr-2">

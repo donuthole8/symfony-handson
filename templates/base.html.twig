@@ -34,10 +34,21 @@
 
         <div class="text-right">
             <div class="text-sm text-gray-400 dark:text-gray-500">
-                <div>Login & Registration Goes Here</div>
-                <div>
-                    <a href="{{ path('micro_post_add') }}">New Post</a>
-                </div>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <div>
+                        <a href="{{ path('micro_post_add') }}">New Post</a>
+                    </div>
+                    <div>
+                        <a href="{{ path('logout') }}">Logout</a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="{{ path('login') }}">Login</a>
+                    </div>
+                    <div>
+                        <a href="{{ path('register') }}">Register</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
