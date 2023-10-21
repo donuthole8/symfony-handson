@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use DateTime;
 use App\Entity\Comment;
 use App\Entity\MicroPost;
 use App\Form\CommentType;
