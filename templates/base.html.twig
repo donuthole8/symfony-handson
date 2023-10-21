@@ -33,19 +33,22 @@
         </div>
 
         <div class="text-right">
-            <div class="text-sm text-gray-400 dark:text-gray-500">
+            <div class="text-sm text-gray-500 dark:text-gray-200 flex flex-row-reverse">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div>
                         <a href="{{ path('micro_post_add') }}">New Post</a>
                     </div>
-                    <div>
+                    <div class="ml-4">
                         <a href="{{ path('logout') }}">Logout</a>
                     </div>
+                    <div class="ml-4">
+                        <a href="{{ path('setting_profile') }}">Profile Setting</a>
+                    </div>
                 {% else %}
-                    <div>
+                    <div class="ml-4">
                         <a href="{{ path('login') }}">Login</a>
                     </div>
-                    <div>
+                    <div class="ml-4">
                         <a href="{{ path('register') }}">Register</a>
                     </div>
                 {% endif %}
