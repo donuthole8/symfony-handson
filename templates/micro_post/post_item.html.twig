@@ -11,12 +11,21 @@
         {{ microPost.created | date("M j, Y") }}
     </div>
     <div>
-        <a href="#" class="flex flex-row">
+    {% if microPost.likedBy.contains(app.user) %}
+        <a href="{{ path('unlike', { id: microPost.id }) }}" class="flex flex-row">
             <svg class="w-4 rounded-full bg-red-600 text-white dark:bg-red-500 m-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>
-            <span>- 0</span>
+            <span>- {{ microPost.likedBy.count }}</span>
         </a>
+    {% else %}
+        <a href="{{ path('like', { id: microPost.id }) }}" class="flex flex-row">
+            <svg class="w-4 rounded-full bg-white-600 text-white dark:bg-white-500 m-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+            <span>- {{ microPost.likedBy.count }}</span>
+        </a>
+    {% endif %}
     </div>
     <div class="text-sm text-gray-500 dark:text-gray-400">
         <a href="{{ path('profile', { id: microPost.author.id }) }}">{{ microPost.author.email }}</a>
