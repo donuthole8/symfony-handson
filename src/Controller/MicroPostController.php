@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use DateTime;
 use App\Entity\Comment;
 use App\Entity\MicroPost;
 use App\Form\CommentType;
@@ -47,7 +46,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro_post/add', name: 'micro_post_add', priority: 2)]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_WRITER')]
     public function addMicroPost(
         Request $request,
         MicroPostRepository $microPostRepository,

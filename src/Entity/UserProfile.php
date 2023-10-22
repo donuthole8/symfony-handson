@@ -20,6 +20,9 @@ class UserProfile
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $bio = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $websiteUrl = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $twitterUserName = null;
 
@@ -61,6 +64,18 @@ class UserProfile
     public function setBio(?string $bio): self
     {
         $this->bio = $bio;
+
+        return $this;
+    }
+
+    public function getWebsiteUrl(): ?string
+    {
+        return $this->websiteUrl;
+    }
+
+    public function setWebsiteUrl(?string $websiteUrl): self
+    {
+        $this->websiteUrl = $websiteUrl;
 
         return $this;
     }
