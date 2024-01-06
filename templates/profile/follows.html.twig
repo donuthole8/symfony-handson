@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User Profile{% endblock %}
+{% block title %}User Profile → Follows{% endblock %}
 
 {% block bread %}
-→ User Profile
+→ User Profile → Follows
 {% endblock %}
 
 {% block body %}
 {{ include('profile/header.html.twig') }}
 {{ include('profile/tabs.html.twig') }}
-{{ include('micro_post/post_list.html.twig', { microPosts: user.microPost }) }}
+{{ include('follower/follow_list.html.twig', { follows: user.follows }) }}
 {% endblock %}
