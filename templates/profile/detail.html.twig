@@ -9,5 +9,5 @@
 {% block body %}
 {{ include('profile/header.html.twig') }}
 {{ include('profile/tabs.html.twig') }}
-{{ include('micro_post/post_list.html.twig', { microPosts: user.microPost }) }}
+{{ include('micro_post/post_list.html.twig', { microPosts: microPosts }) }}
 {% endblock %}
