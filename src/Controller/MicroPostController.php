@@ -122,4 +122,24 @@ class MicroPostController extends AbstractController
             'microPost' => $microPost,
         ]);
     }
+
+    #[Route('/micro_post/top_liked', name: 'micro_post_top_liked')]
+    public function topLiked(
+        MicroPostRepository $microPostRepository
+    ): Response
+    {
+        return $this->render('micro_post/top_liked.html.twig', [
+            'microPosts' => $microPostRepository->findAllWithComments(),
+        ]);
+    }
+
+    #[Route('/micro_post/follows', name: 'micro_post_follows')]
+    public function follows(
+        MicroPostRepository $microPostRepository
+    ): Response
+    {
+        return $this->render('micro_post/follows.html.twig', [
+            'microPosts' => $microPostRepository->findAllWithComments(),
+        ]);
+    }
 }
