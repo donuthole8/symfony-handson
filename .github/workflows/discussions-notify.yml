@@ -9,10 +9,10 @@ jobs:
     if: github.event.discussion && !github.event.comment
     steps:
       - run: |
-          curl -X POST -d '{ "text": "dummy: ${{ github.event.discussion.title }}, ${{ github.event.discussion.body }}, ${{ github.event.discussion.html_url }}, ${{ github.event.discussion.category.name }}, ${{ github.event.discussion.user }}" }' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -d '{ "text": "dummy: ${{ github.event.discussion.title }}, ${{ github.event.discussion.body }}, ${{ github.event.discussion.html_url }}, ${{ github.event.discussion.category.name }}, ${{ github.event.discussion.user.login }}" }' ${{ secrets.SLACK_WEBHOOK_URL }}
   discussion_commented:
     runs-on: ubuntu-latest
     if: github.event.discussion && github.event.comment
     steps:
       - run: |
-          curl -X POST -d '{ "text": "dummy: ${{ github.event.comment.title }}, ${{ github.event.comment.body }}, ${{ github.event.comment.html_url }}, ${{ github.event.comment.category.name }}, ${{ github.event.comment.user }}" }' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -d '{ "text": "dummy: ${{ github.event.comment.title }}, ${{ github.event.comment.body }}, ${{ github.event.comment.html_url }}, ${{ github.event.discussion.category.name }}, ${{ github.event.comment.user.login }}" }' ${{ secrets.SLACK_WEBHOOK_URL }}
